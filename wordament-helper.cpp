@@ -1,6 +1,8 @@
 #include<iostream>
 #include<fstream>
 #include<set>
+#include<vector>
+#include<algorithm>
 
 #define REP(i,n) for (int i = 1; i <= n; i++)
 using namespace std;
@@ -50,15 +52,22 @@ void dfs(int i , int j , string word)
 		foundWords.insert(word);
 	}
 	
-	REP(index , 4)
+	if(foundWords.size() > 50) return;
+	
+	REP(index , 8)
 	{
-		int x = i + dx[index];
-		int y = j + dy[index];
+		int x = i + dx[index-1];
+		int y = j + dy[index-1];
 		
 		if(x >= 1 && x <= 4 && y >= 1 && y <= 4 && visit[x][y] == false)
 		dfs(x , y , word + inputArray[x][y]);
 	}
 	visit[i][j] = false;
+}
+
+bool comp(string a , string b)
+{
+	return a.size() > b.size();
 }
 
 int main()
@@ -81,13 +90,18 @@ int main()
 		cout<<foundWords.size()<<endl;
 		cout<<endl<<endl<<"printing words"<<endl;
 		
+		vector<string> res;
 		for(string word : foundWords)
-		cout<<word<<endl;
+		res.push_back(word);
+		
+		sort(res.begin() , res.end() , comp);
+		
+		for(string word : res)
+		cout<<word<<endl , res.pop_back();
 		
 		cout<<"enter 0 for exit"<<endl;
 		cin>>code;
 	}
 	
 }
-
 
